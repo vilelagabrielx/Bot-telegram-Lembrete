@@ -67,25 +67,26 @@ def send_welcome(message):
                 
             elif message.id != lembreteData['mensageDataid'] and lembreteData['mensageDataid'] != '':
                 if str(message.text).upper() == 'SIM' or str(message.text).upper() == 'S':
+                    bot.reply_to(message, f"Salvando..")
                     try:
                         connection = sqlcon.SlqConection().conecta()
                         comands = sqlcomands.SqlCommands()
-                        data = lembreteData['mensagemData'] + ' '+lembreteHora['mensagemHora']
+                        data = lembreteData['mensagemData'] + ' '+lembreteHora['mensagemHora'] + ':00'
                         ComandoAdicionaLembrete = comands.addLembrete(message.from_user.id,message.chat.id,lembreteMensagem['mensagem'],data)
                         cursor = connection.cursor()
                         cursor.execute(ComandoAdicionaLembrete)
-                        print('deu bom')
+                        connection.commit()
+                        connection.close()
                     except Exception as e:
-                        print('deu ruim')
                         print(e)
                         pass    
-                    bot.reply_to(message, f"Salvando..")
                     lembreteMensagem['mensagem'] = ''
                     lembreteMensagem['mensagemid'] = ''
                     lembreteData['mensagemData'] = ''
                     lembreteData['mensageDataid'] = ''
-                    lembreteHora['mensageHoraid'] = ''
+                    lembreteHora['mensageHcoraid'] = ''
                     lembreteHora['mensagemHora'] = ''
+                    bot.reply_to(message,'Lembrete salvo 🙏🤙✅\n/start -Iniciar novamente"')
                     pass
                 elif str(message.text).upper() == 'NÃO' or str(message.text).upper() == 'NAO' or str(message.text).upper() == 'N':
                     lembreteMensagem['mensagem'] = ''
