@@ -3,7 +3,7 @@ from cryptography.fernet import Fernet
 class Cripto:
     def __init__(self) -> None:
         
-        self.__KEY : str = '' #chave secreta utilizada atualmente
+        self.__KEY : str = 'CHAVE CRIPTO AQUI' #chave secreta utilizada atualmente
 
         self.__fernet = Fernet(self.__KEY) #Instancia a classe de criptografia com a chave
 
@@ -12,4 +12,5 @@ class Cripto:
 
     def decriptar(self, object : bytes) -> bytes: #função de decriptografar
         return self.__fernet.decrypt(object)
-#print(Cripto().encriptar(b'bd_bot_telegram'))
+
+# print(Cripto().encriptar(b'bd_bot_telegram'))
