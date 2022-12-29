@@ -1,6 +1,7 @@
 import telebot as telebot
 import datetime as datetime
 import MODEL.sqlConnection as sqlcon
+import MODEL.sqlCommands as sqlcomands
 bot = telebot.TeleBot("5699376581:AAE4oP3RuikBSsIleFAuTg2mR7gxmKkNb-c")
 
 @bot.message_handler(commands=['start'])
@@ -67,8 +68,12 @@ def send_welcome(message):
             elif message.id != lembreteData['mensageDataid'] and lembreteData['mensageDataid'] != '':
                 if str(message.text).upper() == 'SIM' or str(message.text).upper() == 'S':
                     try:
-                        s = sqlcon.SlqConection()
-                        s.conecta()
+                        connection = sqlcon.SlqConection().conecta()
+                        comands = sqlcomands.SqlCommands()
+                        data = lembreteData['mensagemData'] + ' '+lembreteHora['mensagemHora']
+                        ComandoAdicionaLembrete = comands.addLembrete(message.from_user.id,message.chat.id,lembreteMensagem['mensagem'],data)
+                        cursor = connection.cursor()
+                        cursor.execute(ComandoAdicionaLembrete)
                         print('deu bom')
                     except Exception as e:
                         print('deu ruim')

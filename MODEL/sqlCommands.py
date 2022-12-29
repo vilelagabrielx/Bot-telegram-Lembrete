@@ -9,4 +9,4 @@ class SqlCommands:
         return 's_verifica_pedidos_on'
 
     def addLembrete(self,idUsuario,idChat,Mensagem,dataLembrete) -> str:
-        return f'insert into tb_mensagem_salva(idUsuario,idChat,Mensagem,data_lembrete) select {idUsuario},{idChat},{Mensagem},{dataLembrete}'
+        return f'insert into tb_mensagem_salva(idUsuario,idChat,Mensagem,data_lembrete) select {idUsuario},{idChat},"{Mensagem}","{dataLembrete}"'
