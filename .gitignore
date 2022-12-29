@@ -1,3 +1,5 @@
 env
 __pycache__
 CONTROLLER/cripto.py
+server-config.json
+MODEL/server-config.json
