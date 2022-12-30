@@ -8,9 +8,11 @@ class Cripto:
         self.__fernet = Fernet(self.__KEY) #Instancia a classe de criptografia com a chave
 
     def encriptar(self, object : bytes) -> bytes: #função de criptografar 
+
         return self.__fernet.encrypt(object)
 
     def decriptar(self, object : bytes) -> bytes: #função de decriptografar
+        
         return self.__fernet.decrypt(object)
 
 # print(Cripto().encriptar(b'bd_bot_telegram'))
