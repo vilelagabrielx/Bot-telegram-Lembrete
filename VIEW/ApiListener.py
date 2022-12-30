@@ -3,6 +3,9 @@ import datetime as datetime
 import MODEL.sqlConnection as sqlcon
 import MODEL.sqlCommands as sqlcomands
 import CONTROLLER.server_config as  ServerConfig
+from threading import Thread
+import schedule as schedule
+import time as time
 
 class ApiTelegramListener:
     def __init__(self) -> None:
@@ -13,8 +16,8 @@ class ApiTelegramListener:
     
         @bot.message_handler(commands=['start'])
         def start(message):
-            # print(message)
-            bot.reply_to(message, f"Opa {message.chat.first_name}, ta beleza ? Ainda estou em desenvolvimento. Versão atual 0.1\n /novoLembrete - Salva novo lembrete")
+            # print(message) 
+            bot.reply_to(message, f"Opa {message.chat.first_name}, ta beleza ? Ainda estou em desenvolvimento. Versão atual 0.1\n/novoLembrete - Salva novo lembrete \n/verLembretes - Ver lembretes salvos")
 
         @bot.message_handler(commands=['novoLembrete'])
         def lembrete(message):
@@ -31,7 +34,7 @@ class ApiTelegramListener:
                     bot.reply_to(message, f"Quando você quer que eu te lembre ? DIGITE APENAS A DATA NO FORMATO DD-MM-AA(DIA-MÊS-ANO)") 
                 else:
                     if message.id != lembreteData['mensageDataid'] and lembreteData['mensageDataid'] == '':
-                        print(lembreteData['mensagemData'])
+                        # print(lembreteData['mensagemData'])
                         try:
                             testData = datetime.datetime.strptime(message.text,'%d-%m-%Y')
                             lembreteData['mensagemData'] = message.text
@@ -78,7 +81,7 @@ class ApiTelegramListener:
                             try:
                                 connection = sqlcon.SlqConection().conecta()
                                 comands = sqlcomands.SqlCommands()
-                                data = lembreteData['mensagemData'] + ' '+lembreteHora['mensagemHora'] + ':00'
+                                data = lembreteData['mensagemData'] + ' '+lembreteHora['mensagemHora']
                                 ComandoAdicionaLembrete = comands.addLembrete(message.from_user.id,message.chat.id,lembreteMensagem['mensagem'],data)
                                 cursor = connection.cursor()
                                 cursor.execute(ComandoAdicionaLembrete)
@@ -115,5 +118,112 @@ class ApiTelegramListener:
                             lembreteData['mensageDataid'] = ''
                             lembreteHora['mensageHoraid'] = ''
                             lembreteHora['mensagemHora'] = ''
-                     
-        bot.infinity_polling()
+
+        @bot.message_handler(commands=['verLembretes'])
+        def verLembretesSalvos(message):
+            userid = message.from_user.id
+            chatid = message.chat.id
+            try:
+                connection = sqlcon.SlqConection().conecta()
+                comands = sqlcomands.SqlCommands()
+                ComandoRetornaLembretes = comands.getLembretes(userid,chatid)
+                cursor = connection.cursor()
+                cursor.execute(ComandoRetornaLembretes)
+                result : list[tuple] = [row for row in cursor.fetchall()]  # type: ignore | cria uma lista com os valores do resultado
+                columns : list = [column[0] for column in cursor.description] # type: ignore  | cria uma lista com as colunas do resultado
+                strResults = ''
+                if result: #caso exista algum resultado
+                    for index in range(len(result)):
+                        strResults +='<b><i><u>ID</u></i></b>: '+'\n'+ str(result[index][0]) +'\n'+'<b><i><u>Lembrete</u></i></b>: '+'\n'+ result[index][1] + '\n' + '<b><i><u>Data</u></i></b>: '+'\n' + result[index][2] + '\n' + '<b><i><u>Enviado</u></i></b>: '+'\n'+ ('Sim ✅' if result[index][3]  == 1 else 'Não ❌') +'\n-------------------------------\n'
+                    bot.reply_to(message,strResults + '\n/del + ID - para apagar um Lembrete em específico. Ex: Del 6 : Apaga o Lembrete de ID 6\n/del all - Apaga todos os Lembretes\n/del enviados - Apaga todos os Lembretes já disparados(Os mesmos são apagados automáticamente após 1 dia.)\n/start -Iniciar novamente',parse_mode='HTML')
+                else:
+                    bot.reply_to(message,'Não existem lembretes pra você nesse chat\n/start -Iniciar novamente')
+                
+                connection.commit()
+                cursor.close()
+                connection.close()
+                
+            except Exception as e:
+                print(e)
+
+        @bot.message_handler(commands=['del'])
+        def deletaLembrete(message):
+            userid = message.from_user.id
+            chatid = message.chat.id
+            connection = sqlcon.SlqConection().conecta()
+            comands = sqlcomands.SqlCommands()
+            try:
+                arg = message.text.split()[1]
+                # print(arg)
+                try:
+                    arg = int(arg)
+                    ComandoDeletaLembretes = comands.delLembretes(userid,chatid,arg)
+                    cursor = connection.cursor()
+                    cursor.execute(ComandoDeletaLembretes)
+                    connection.commit()
+                    cursor.close()
+                    connection.close()
+                    bot.reply_to(message,f'Caso exista, o lembrete de id {arg} foi apagado.\n/start -Iniciar novamente')
+                    arg = ''
+                except:
+                    if arg.upper() == 'ALL':
+                        ComandoDeletaLembretes = comands.delLembretes(userid,chatid)
+                        cursor = connection.cursor()
+                        cursor.execute(ComandoDeletaLembretes)
+                        connection.commit()
+                        cursor.close()
+                        connection.close()
+                        arg = ''
+                        bot.reply_to(message,'Todos os seus lembretes neste chat foram apagados.\n/start -Iniciar novamente')
+                    elif arg.upper() == 'ENVIADOS':
+                        ComandoDeletaLembretes = comands.delLembretes(userid,chatid,'null',1)
+                        cursor = connection.cursor()
+                        cursor.execute(ComandoDeletaLembretes)
+                        connection.commit()
+                        cursor.close()
+                        connection.close()
+                        arg = ''
+                        bot.reply_to(message,f'Caso existam, os lembretes que já foram enviados foram apagados\n/start -Iniciar novamente')      
+                    else:
+                        bot.reply_to(message, f"Favor passar argumentos válidos\n/del + ID - para apagar um Lembrete em específico. Ex: Del 6 : Apaga o Lembrete de ID 6\n/del all - Apaga todos os Lembretes\n/del enviados - Apaga todos os Lembretes já disparados(Os mesmos são apagados automáticamente após 1 dia.)\n/start -Iniciar novamente")
+            except:
+                bot.reply_to(message, f"Favor passar argumentos válidos\n/del + ID - para apagar um Lembrete em específico. Ex: Del 6 : Apaga o Lembrete de ID 6\n/del all - Apaga todos os Lembretes\n/del enviados - Apaga todos os Lembretes já disparados(Os mesmos são apagados automáticamente após 1 dia.)\n/start -Iniciar novamente")
+            
+        def verificaLembretes():
+            dataatual = datetime.datetime.now().strftime('%d-%m-%Y %H:%M')
+            # print(dataatual)
+            connection = sqlcon.SlqConection().conecta()
+            comands = sqlcomands.SqlCommands()
+            ComandoverificaLembretes = comands.verificaLembretes(dataatual)
+            cursor = connection.cursor()
+            cursor.execute(ComandoverificaLembretes)
+            result : list[tuple] = [row for row in cursor.fetchall()]
+            ids = []
+            if result:
+                
+                for results in result:
+                    id = results[0]
+                    ids.append(id)
+                    mensagem = results[1]
+                    dataLembrete = results[2]
+                    idchat = results[3]
+                    bot.send_message(idchat,f'SEGUE O LEMBRETE SOLICITADO!(id do lembrete = {id})\n\n{mensagem}')
+                    time.sleep(5)
+                for id in ids:
+                    comands = sqlcomands.SqlCommands()
+                    ComandoatualizaLembretesEnviados = comands.atualizaLembretesEnviados(id)
+                    cursor.execute(ComandoatualizaLembretesEnviados)
+            connection.commit()
+
+            connection.close()
+
+        def iniciaScheduler():
+            schedule.every().minute.at(":00").do(verificaLembretes)
+            while True:
+                schedule.run_pending()
+                time.sleep(1)
+        
+        t1 =Thread(target=bot.infinity_polling).start()
+        t2 =Thread(target=iniciaScheduler).start()
+        
+        
