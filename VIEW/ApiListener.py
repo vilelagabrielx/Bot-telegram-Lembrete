@@ -21,7 +21,7 @@ class ApiTelegramListener:
         @bot.message_handler(commands=['start']) #Comando /start
         def start(message):
             #mensagem inicial
-            bot.reply_to(message, f"Opa {message.chat.first_name}, ta beleza ? Ainda estou em desenvolvimento. Versão atual 1.0\n/novoLembrete - Salva novo lembrete \n/verLembretes - Ver lembretes salvos")
+            bot.reply_to(message, f"Opa {message.from_user.first_name}, ta tudo beleza ? Ainda estou em desenvolvimento. Versão atual 1.0 - ultima atualização - 30-12-2022 04:27\n/novoLembrete - Salva novo lembrete \n/verLembretes - Ver lembretes salvos")
 
         @bot.message_handler(commands=['novoLembrete']) #Comando /novoLembrete
         def lembrete(message):
