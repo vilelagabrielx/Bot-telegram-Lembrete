@@ -8,9 +8,11 @@ class ServerConfig:
 
         self.__encoding : str = 'utf-8'
 
-        self.__CRIPTO = Cripto() #instancia o objeto de criptografia
-
         self.__JSON : dict[str, str] = load(open('./MODEL/server-config.json', mode='r', encoding='utf-8')) #abre o json de conexão
+
+        self.__CRIPTO = Cripto(self.__JSON['criptokey']) #instancia o objeto de criptografia
+
+        self.apikey = self.__JSON['apikey']
 
         self.host : str = self.__CRIPTO.decriptar( #decripta a conexão
             bytes(self.__JSON['host'], self.__encoding)
