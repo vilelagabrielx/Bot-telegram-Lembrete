@@ -348,9 +348,9 @@ class ApiTelegramListener:
             connection = sqlcon.SlqConection().conecta() # cria conexao
             
             comands = sqlcomands.SqlCommands() #cria objeto de comando sql
-            
+            print(dataatual)
             ComandoverificaLembretes = comands.verificaLembretes(dataatual) #cria o comando
-            
+            print(ComandoverificaLembretes)
             cursor = connection.cursor() #cria o cursor
             
             cursor.execute(ComandoverificaLembretes) #executa o cursor

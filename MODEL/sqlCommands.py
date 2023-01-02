@@ -28,8 +28,9 @@ class SqlCommands:
     
     def verificaLembretes(self,data):
     
-        return f'select id,Mensagem,data_lembrete,idChat from tb_mensagem_salva where data_lembrete <="{data}" and enviado = 0'
+        return f'select id,Mensagem,data_lembrete,idChat from tb_mensagem_salva where  STR_TO_DATE( data_lembrete , "%d-%m-%Y %H:%i" ) <= STR_TO_DATE( "{data}" , "%d-%m-%Y %H:%i" ) and enviado = 0'
     
     def atualizaLembretesEnviados(self,id):
     
         return f'update tb_mensagem_salva set enviado = 1 where id = {id}'
+       

@@ -1,7 +1,5 @@
 from mysql.connector import connect #lib utilizada para conectar com o mysql
 from CONTROLLER.server_config import ServerConfig  #classe de configuração
-from mysql.connector import CMySQLConnection,MySQLConnection  #lib utilizada para conectar com o mysql
-
 
 class SlqConection:
 
@@ -10,7 +8,7 @@ class SlqConection:
         self.__config = ServerConfig() #faz a leitura das configs do server de banco de dados
         
 
-    def conecta(self) -> CMySQLConnection | MySQLConnection:
+    def conecta(self):
     
         return connect( #retorna uma conexão com a connection string abaixo
     
