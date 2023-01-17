@@ -37,5 +37,25 @@ Um bot simples para gravar e receber lembretes no telegram que implemente as seg
  
 ![image](https://user-images.githubusercontent.com/61162949/212972242-46fdbdb4-66a7-424a-b3f9-21fb2fb043d9.png)
 
+- Deleção de lembretes pelo ID do mesmo.
+- **É necessário inicializar o bot com "/start" > "/del + ID DO LEMBRETE"**
+
+ ## Exemplo de deleção dos lembretes pelo ID do mesmo:
  
-## INSTALAÇÃO
+![image](https://user-images.githubusercontent.com/61162949/212973227-2e8742ec-aa31-4a1a-9fff-4321465a3f53.png)
+
+
+- Deleção de todos os lembretes.
+- **É necessário inicializar o bot com "/start" > "/del all"**
+
+## Exemplo de deleção de todos os lembretes:
+![image](https://user-images.githubusercontent.com/61162949/212975404-a59a21ba-1364-44b4-b686-506f4aa5f603.png)
+
+- Deleção de todos os lembretes que já foram enviados
+- **É necessário inicializar o bot com "/start" > "/del enviados"**
+
+
+## Exemplo de deleção de todos os lembretes que já foram enviados:
+![image](https://user-images.githubusercontent.com/61162949/212976128-73569f5e-6447-41e9-9d32-d1471c6b007c.png)
+
+
