@@ -123,3 +123,7 @@ CREATE TABLE `tb_mensagem_salva` (
 
 ```  
 - passo 11 : Execute a aplicação.
+
+## Deploy
+
+- O deploy da mesma foi feito em um servidor Ubuntu 18.04.6 LTS com o Mysql na versão 5.7.40 e Python 3 na versão 3.6.9 e pode ser testado no link : https://t.me/botLembretesbot
