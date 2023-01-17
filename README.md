@@ -1,9 +1,9 @@
-# Bot-telegram-Lembrete
+# Bot de lembretes no telegram
 
 
 ## DESCRIÇÃO
 
-Um bot simples para gravar e receber lembretes no telegram que implemente as seguintes funcionalidas:
+Este projeto é um bot simples para Telegram que permite aos usuários criar e receber lembretes. Ele utiliza a API do Telegram para interagir com o usuário, o banco de dados MySQL para armazenar os lembretes e threads para garantir a execução simultânea do módulo de conversa com o usuário e o módulo de envio de lembretes. As funcionalidades implementadas incluem:
   
     -Criação de lembretes que serão enviados na data escolhida.
   
