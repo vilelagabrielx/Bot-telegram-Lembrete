@@ -31,7 +31,7 @@ Um bot simples para gravar e receber lembretes no telegram que implemente as seg
 ![image](https://user-images.githubusercontent.com/61162949/212970733-0fedd7a7-48c6-469f-9d8e-f40297fd33f4.png)
 
 - Listagem de todos os lembretes, tanto enviados quanto não enviados.
-- **É necessário inicializar o bot com "/start" > "/verLembretes"**
+  - **É necessário inicializar o bot com "/start" > "/verLembretes"**
 
  ## Exemplo de listagem dos lembretes:
  
