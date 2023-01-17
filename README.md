@@ -59,3 +59,67 @@ Este projeto é um bot simples para Telegram que permite aos usuários criar e r
 ![image](https://user-images.githubusercontent.com/61162949/212976128-73569f5e-6447-41e9-9d32-d1471c6b007c.png)
 
 
+## Instalação
+
+- Passo 1: Certifique-se que o Python 3 está instalado. A versão do python utilizada neste projeto foi a 3.6.9.
+
+- Passo 2: Clone este repositório.
+
+- Passo 3: Vá até o diretório raís da mesma e instale as dependencias usando o comando "pip install -m req.txt".
+
+- passo 4: Renomeie o arquivo "server-config_example.json",que se encontra na pasta "MODEL", para "server-config.json".
+
+- passo 5: Crie uma chave de criptografia da seguinte forma.
+
+- passo 6: Crie um arquivo "criptografia.py" em qualquer diretorio e certifique-se que o *Fernet* esteja instalado(pip install criptografia). 
+
+- passo 7: Coloque o seguinte código no arquivo "criptografia.py"
+
+```  
+from cryptography.fernet import Fernet 
+key = Fernet.generate_key() 
+f = Fernet(key) 
+token = f.encrypt(b"welcome to geeksforgeeks") 
+print(token)  
+
+```  
+- passo 8: Copie o token gerado e coloque no arquivo "server-config.json" na chave "criptokey".
+
+- passo 9: Você precisa criptografar todas as informações necessárias para colocar no arquivo "server-config.json", menos a "apikey". Isso pode ser feito utilizando o módulo "CONTROLLER/cripto.py".
+
+```  
+from cryptography.fernet import Fernet
+
+class Cripto:
+    def __init__(self,key) -> None:
+        
+        self.__KEY : str = key #chave secreta utilizada atualmente
+
+        self.__fernet = Fernet(self.__KEY) #Instancia a classe de criptografia com a chave
+
+    def encriptar(self, object : bytes) -> bytes: #função de criptografar 
+        
+        return self.__fernet.encrypt(object)
+
+    def decriptar(self, object : bytes) -> bytes: #função de decriptografar
+        return self.__fernet.decrypt(object)
+
+#No exemplo, o nome do banco(database) será criptografado
+print(Cripto('SUA CHAVE DE CRIPTOGRAFIA AQUI').encriptar(b'bd_bot_telegram'))
+
+```  
+- passo 10 : Crie a seguinte tabela no MySQL
+
+```  
+CREATE TABLE `tb_mensagem_salva` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `idUsuario` int(11) NOT NULL,
+  `idChat` int(11) NOT NULL,
+  `Mensagem` longtext,
+  `data_lembrete` varchar(50) DEFAULT NULL,
+  `enviado` bit(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+
+```  
+- passo 11 : Execute a aplicação.
