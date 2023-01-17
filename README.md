@@ -71,9 +71,9 @@ Este projeto é um bot simples para Telegram que permite aos usuários criar e r
 
 - passo 5: Crie uma chave de criptografia da seguinte forma.
 
-- passo 6: Crie um arquivo "criptografia.py" em qualquer diretorio e certifique-se que o *Fernet* esteja instalado(pip install criptografia). 
+    - Crie um arquivo "criptografia.py" em qualquer diretorio e certifique-se que o *Fernet* esteja instalado(pip install criptografia). 
 
-- passo 7: Coloque o seguinte código no arquivo "criptografia.py"
+    - Coloque o seguinte código no arquivo "criptografia.py"
 
 ```  
 from cryptography.fernet import Fernet 
