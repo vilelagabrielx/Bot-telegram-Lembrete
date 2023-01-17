@@ -77,10 +77,10 @@ Este projeto é um bot simples para Telegram que permite aos usuários criar e r
 
 ```  
 from cryptography.fernet import Fernet 
+
 key = Fernet.generate_key() 
-f = Fernet(key) 
-token = f.encrypt(b"welcome to geeksforgeeks") 
-print(token)  
+
+print(key)  
 
 ```  
 - passo 8: Copie o token gerado e coloque no arquivo "server-config.json" na chave "criptokey".
