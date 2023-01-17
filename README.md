@@ -85,7 +85,7 @@ print(key)
 ```  
 - passo 8: Copie o token gerado e coloque no arquivo "server-config.json" na chave "criptokey".
 
-- passo 9: Você precisa criptografar todas as informações necessárias para colocar no arquivo "server-config.json", menos a "apikey". Isso pode ser feito utilizando o módulo "CONTROLLER/cripto.py".
+- passo 9: Você precisa criptografar todas as informações necessárias para colocar no arquivo "server-config.json", menos a "apikey"(ela deve ser colocada da forma que o botfather enviar). Isso pode ser feito utilizando o módulo "CONTROLLER/cripto.py".
 
 ```  
 from cryptography.fernet import Fernet
