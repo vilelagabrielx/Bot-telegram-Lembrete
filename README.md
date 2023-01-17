@@ -38,7 +38,7 @@ Um bot simples para gravar e receber lembretes no telegram que implemente as seg
 ![image](https://user-images.githubusercontent.com/61162949/212972242-46fdbdb4-66a7-424a-b3f9-21fb2fb043d9.png)
 
 - Deleção de lembretes pelo ID do mesmo.
-- **É necessário inicializar o bot com "/start" > "/del + ID DO LEMBRETE"**
+  - **É necessário inicializar o bot com "/start" > "/del + ID DO LEMBRETE"**
 
  ## Exemplo de deleção dos lembretes pelo ID do mesmo:
  
@@ -46,13 +46,13 @@ Um bot simples para gravar e receber lembretes no telegram que implemente as seg
 
 
 - Deleção de todos os lembretes.
-- **É necessário inicializar o bot com "/start" > "/del all"**
+  - **É necessário inicializar o bot com "/start" > "/del all"**
 
 ## Exemplo de deleção de todos os lembretes:
 ![image](https://user-images.githubusercontent.com/61162949/212975404-a59a21ba-1364-44b4-b686-506f4aa5f603.png)
 
 - Deleção de todos os lembretes que já foram enviados
-- **É necessário inicializar o bot com "/start" > "/del enviados"**
+  - **É necessário inicializar o bot com "/start" > "/del enviados"**
 
 
 ## Exemplo de deleção de todos os lembretes que já foram enviados:
